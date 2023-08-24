@@ -1,6 +1,6 @@
 import { ElMessage } from 'element-plus'
 export const fetchConfig = {
-    baseURL: "http://127.0.0.1:8000",
+    baseURL: "http://127.0.0.1:30000",
     headers: {
         appid: "bd9d01ecc75dbbaaefce"
     },
@@ -45,6 +45,8 @@ export async function useHttp(key, url, options = {}) {
                 ElMessage.error('服务端错误')
             }
             error.value = msg
+            console.log(error)
+            console.log(data)
             return {
                 data,
                 error
@@ -64,6 +66,7 @@ export async function useHttp(key, url, options = {}) {
     if (process.client && res.error.value) {
         const msg = res.error.value?.data?.data
         if (!options.lazy) {
+            console.log(res)
             ElMessage.error('服务端错误')
         }
     }
