@@ -74,7 +74,7 @@ const fetchData = async () => {
 
     const {
         data
-    } = await useHttpGet("/api", `/api/articles?last_id=${last_id.value}`, {
+    } = await useHttpGet("/api/articles", `/api/articles?last_id=${last_id.value}`, {
     });
     if (data.value) {
         data.value.map((i) => {

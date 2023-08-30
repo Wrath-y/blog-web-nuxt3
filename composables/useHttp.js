@@ -1,26 +1,22 @@
 import { ElMessage } from 'element-plus'
 export const fetchConfig = {
-    baseURL: "http://127.0.0.1:30000",
-    headers: {
-        appid: "bd9d01ecc75dbbaaefce"
-    },
+    baseURL: "https://wrath.cc/go",
+    headers: {},
 }
 
 //请求体封装
 function useGetFetchOptions(options = {}) {
     options.baseURL = options.baseURL ?? fetchConfig.baseURL
-    options.headers = options.headers ?? {
-        appid: fetchConfig.headers.appid
-    }
+    options.headers = options.headers ?? {}
     options.initialCache = options.initialCache ?? false
     options.lazy = options.lazy ?? false
 
-    // 用户登录，默认传token
-    const token = useCookie("token")
+    // // 用户登录，默认传token
+    // const token = useCookie("token")
 
-    if (token.value) {
-        options.headers.token = token.value
-    }
+    // if (token.value) {
+    //     options.headers.token = token.value
+    // }
 
     return options
 }
@@ -46,7 +42,6 @@ export async function useHttp(key, url, options = {}) {
             }
             error.value = msg
             console.log(error)
-            console.log(data)
             return {
                 data,
                 error
@@ -64,7 +59,6 @@ export async function useHttp(key, url, options = {}) {
 
     // 客户端错误处理
     if (process.client && res.error.value) {
-        const msg = res.error.value?.data?.data
         if (!options.lazy) {
             console.log(res)
             ElMessage.error('服务端错误')
