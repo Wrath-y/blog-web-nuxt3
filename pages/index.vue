@@ -1,12 +1,12 @@
 <template>
     <div class="big-box">
-        <div class="list" v-loading="loading">
+        <div class="list" v-loading.fullscreen.lock="loading">
             <div style="display: inline;position: absolute; top: 100px;left:0px">
                 <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1466336567692166"
                     data-ad-slot="5695809452" data-ad-format="auto" data-full-width-responsive="true"></ins>
             </div>
             <div class="content-box">
-                <div class="main-content">
+                <ul class="main-content" v-infinite-scroll="fetchData" :infinite-scroll-disabled="noData">
                     <template v-for="(item, index) in list" :key="index">
                         <el-card class="post-card">
                             <div class="post-image" :class="{ 'float-right': index % 2 !== 0 }">
@@ -45,7 +45,7 @@
                             </div>
                         </el-card>
                     </template>
-                </div>
+                </ul>
             </div>
             <div style="display: inline;position: absolute; top: 100px; right:0px">
                 <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1466336567692166"
@@ -61,10 +61,7 @@ import { ref, onMounted } from 'vue';
 const last_id = ref(0);
 const loading = ref(true)
 const list = ref([]);
-const page = ref(1)
-
-let hasFetchedData = false
-let hasFetchPages = []
+const noData = ref(false)
 
 const fetchData = async () => {
     loading.value = true
@@ -76,7 +73,7 @@ const fetchData = async () => {
         data
     } = await useHttpGet("/api/articles", `/api/articles?last_id=${last_id.value}`, {
     });
-    if (data.value) {
+    if (data.value.length) {
         data.value.map((i) => {
             list.value = list.value.filter((j) => {
                 return i.id != j.id;
@@ -84,24 +81,10 @@ const fetchData = async () => {
         });
         list.value = [...list.value, ...data.value];
         last_id.value = list?.value[list.value.length - 1]?.id;
+    } else {
+        noData.value = true
     }
     loading.value = false
-    hasFetchedData = false
-}
-
-const scrolls = async () => {
-    if (hasFetchPages.includes(last_id.value)) {
-        return
-    }
-    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-    const threshold = viewportHeight * 0.8;
-
-    if (!hasFetchedData && document.documentElement.scrollTop > threshold * (page.value)) {
-        hasFetchedData = true
-        hasFetchPages.push(last_id.value)
-        page.value = page.value + 1;
-        await fetchData();
-    }
 }
 
 const getNowFormatDate = (timestamp) => {
@@ -123,7 +106,6 @@ const getNowFormatDate = (timestamp) => {
 // }
 
 onMounted(() => {
-    window.addEventListener('scroll', scrolls, true);
     googleads()
 })
 
@@ -171,7 +153,7 @@ useAsyncData(fetchData)
     position: relative;
     width: 100%;
     z-index: 9;
-    padding-top: 10vh;
+    padding-top: 5vh;
 
     .content-box {
         display: flex;
