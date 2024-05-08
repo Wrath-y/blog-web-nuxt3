@@ -26,9 +26,9 @@
                             <i class="el-icon-document"></i>
                             {{ form.tags }}
                         </span>
-                        <span>
+                        <span style="margin-left: 10px">
                             <i class="el-icon-view"></i>
-                            发布时间{{ getNowFormatDate(form.create_time) }}
+                            {{ getNowFormatDate(form.create_time) }}
                         </span>
                     </div>
                 </div>
