@@ -16,10 +16,6 @@
                     <div class="post-meta">
                         <span>
                             <i class="el-icon-view"></i>
-                            发布时间{{ getNowFormatDate(form.create_time) }}
-                        </span>
-                        <span>
-                            <i class="el-icon-view"></i>
                             {{ form.hits || 0 }}热度
                         </span>
                         <span style="margin: 0 10px">
@@ -29,6 +25,10 @@
                         <span class="tags">
                             <i class="el-icon-document"></i>
                             {{ form.tags }}
+                        </span>
+                        <span>
+                            <i class="el-icon-view"></i>
+                            发布时间{{ getNowFormatDate(form.create_time) }}
                         </span>
                     </div>
                 </div>
