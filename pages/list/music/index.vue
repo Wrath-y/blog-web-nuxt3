@@ -2,7 +2,7 @@
 
 <script setup>
 onMounted(() => {
-    window.location.href = "https://wrath.cc/music";
+    window.location.href = "https://wrath.cc/music/index.html";
 })
 </script>
 
