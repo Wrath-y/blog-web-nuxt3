@@ -8,37 +8,42 @@
             <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1466336567692166"
                 data-ad-slot="5695809452" data-ad-format="auto" data-full-width-responsive="true"></ins>
         </div>
-        <div style="width: 50%;margin: auto">
-            <div class="top"></div>
-            <el-card v-loading="loading">
-                <div class="header">
-                    <h1 class="header-h1">{{ form.title }}</h1>
-                    <div class="post-meta">
-                        <span>
-                            <i class="el-icon-view"></i>
-                            {{ form.hits || 0 }}热度
-                        </span>
-                        <span style="margin: 0 10px">
-                            <i class="el-icon-edit"></i>
-                            {{ form.comment_count || 0 }}条评论
-                        </span>
-                        <span class="tags">
-                            <i class="el-icon-document"></i>
-                            {{ form.tags }}
-                        </span>
-                        <span style="margin-left: 10px">
-                            <i class="el-icon-view"></i>
-                            {{ getNowFormatDate(form.create_time) }}
-                        </span>
+        <div class="top"></div>
+        <el-row justify="center">
+            <el-col :xs="20" :sm="20" :md="20" :lg="16" :xl="12">
+                <el-card v-loading="loading">
+                    <div class="header">
+                        <span class="header-h1"
+                            :style="{ 'font-weight': 'bold', 'font-size': nowIsMobile ? '20px' : '28px' }">{{ form.title
+                            }}</span>
+                        <div class="post-meta">
+                            <span>
+                                <i class="el-icon-view"></i>
+                                {{ form.hits || 0 }}热度
+                            </span>
+                            <span style="margin: 0 10px">
+                                <i class="el-icon-edit"></i>
+                                {{ form.comment_count || 0 }}条评论
+                            </span>
+                            <span class="tags">
+                                <i class="el-icon-document"></i>
+                                {{ form.tags }}
+                            </span>
+                            <span style="margin-left: 10px">
+                                <i class="el-icon-view"></i>
+                                {{ getNowFormatDate(form.create_time) }}
+                            </span>
+                        </div>
                     </div>
-                </div>
-                <div class='markdown-body' v-html="form.html"></div>
+                    <div class='markdown-body' v-html="form.html"></div>
 
-                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1466336567692166"
-                    data-ad-slot="5695809452" data-ad-format="auto" data-full-width-responsive="true"></ins>
-            </el-card>
-            <ArticleComment />
-        </div>
+                    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1466336567692166"
+                        data-ad-slot="5695809452" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                </el-card>
+                <ArticleComment />
+            </el-col>
+
+        </el-row>
     </div>
 </template>
 
@@ -49,6 +54,7 @@
 const route = useRoute()
 const loading = ref(false)
 const form = ref({})
+const nowIsMobile = ref(false)
 let meta = []
 
 const fetchData = async () => {
@@ -76,8 +82,10 @@ const getNowFormatDate = (timestamp) => {
     return `${year}-${month}-${day}`;
 }
 
+
 onMounted(() => {
     googleads()
+    nowIsMobile.value = isMobile()
 })
 
 useAsyncData(fetchData)
@@ -120,4 +128,3 @@ ins.adsbygoogle[data-ad-status="unfilled"] {
     }
 }
 </style>
-

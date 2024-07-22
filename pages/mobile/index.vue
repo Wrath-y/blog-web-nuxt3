@@ -7,44 +7,45 @@
             </div>
             <div class="content-box">
                 <ul class="main-content" v-infinite-scroll="fetchData" :infinite-scroll-disabled="noData">
-                    <template v-for="(item, index) in list" :key="index">
-                        <el-card class="post-card">
-                            <div class="post-image" :class="{ 'float-right': index % 2 !== 0 }">
-                                <img :src="item.image" />
-                            </div>
-                            <div class="post-con" :class="{ 'float-right': index % 2 == 0 }">
-                                <div class="post-date" :class="{ 'text-right': index % 2 == 0 }">
-                                    <i class="el-icon-time"></i>
-                                    {{ getNowFormatDate(item.create_time) }}
-                                </div>
-                                <nuxt-link :to="`/article/${item.id}`">
-                                    <h3>{{ item.title }}</h3>
-                                </nuxt-link>
-                                <div class="post-meta" :class="{ 'text-right': index % 2 == 0 }">
-                                    <span class="hits">
-                                        <i class="el-icon-view"></i>
-                                        {{ item.hits }}热度
-                                    </span>
-                                    <span class="comments" style="margin: 0 10px">
-                                        <i class="el-icon-edit"></i>
-                                        {{ item.comment_count || 0 }}条评论
-                                    </span>
-                                    <span class="tags" @click="chooseTag(item.tags)">
-                                        <i class="el-icon-document"></i>
-                                        {{ item.tags }}
-                                    </span>
-                                </div>
-                                <div class="post-intro">
-                                    <p>{{ item.intro }}</p>
-                                </div>
-                                <div class="post-bottom" :class="{ 'text-right': index % 2 == 0 }">
-                                    <nuxt-link :to="`/article/${item.id}`">
-                                        <i class="el-icon-more"></i>
-                                    </nuxt-link>
-                                </div>
-                            </div>
-                        </el-card>
-                    </template>
+                    <el-row justify="center">
+                        <template v-for="(item, index) in list" :key="index">
+                            <el-col :xs="22" :sm="22" :md="18">
+                                <el-card class="post-card">
+                                    <div class="post-con">
+                                        <div class="post-date">
+                                            <i class="el-icon-time"></i>
+                                            {{ getNowFormatDate(item.create_time) }}
+                                        </div>
+                                        <nuxt-link :to="`/article/${item.id}`">
+                                            <h3>{{ item.title }}</h3>
+                                        </nuxt-link>
+                                        <div class="post-meta">
+                                            <span class="hits">
+                                                <i class="el-icon-view"></i>
+                                                {{ item.hits }}热度
+                                            </span>
+                                            <span class="comments" style="margin: 0 10px">
+                                                <i class="el-icon-edit"></i>
+                                                {{ item.comment_count || 0 }}条评论
+                                            </span>
+                                            <span class="tags" @click="chooseTag(item.tags)">
+                                                <i class="el-icon-document"></i>
+                                                {{ item.tags }}
+                                            </span>
+                                        </div>
+                                        <div class="post-intro">
+                                            <p>{{ item.intro }}</p>
+                                        </div>
+                                        <div class="post-bottom">
+                                            <nuxt-link :to="`/article/${item.id}`">
+                                                <i class="el-icon-more"></i>
+                                            </nuxt-link>
+                                        </div>
+                                    </div>
+                                </el-card>
+                            </el-col>
+                        </template>
+                    </el-row>
                 </ul>
             </div>
             <div style="display: inline;position: absolute; top: 100px; right:0px">
@@ -62,8 +63,6 @@ const last_id = ref(0);
 const loading = ref(true)
 const list = ref([]);
 const noData = ref(false)
-
-const router = useRouter()
 
 const fetchData = async () => {
     loading.value = true
@@ -109,9 +108,6 @@ const getNowFormatDate = (timestamp) => {
 
 onMounted(() => {
     googleads()
-    if (isMobile()) {
-        router.push('mobile')
-    }
 })
 
 useAsyncData(fetchData)
@@ -167,27 +163,16 @@ useAsyncData(fetchData)
     }
 
     .main-content {
+        padding: 0;
+
         .post-card {
-            width: 780px;
-            height: 300px;
+            height: 250px;
             border-radius: 10px;
             padding: 0;
-            margin: 40px 0;
-
-            .post-image {
-                display: inline-block;
-                width: 429px;
-                overflow: hidden;
-
-                img {
-                    width: 429px;
-                    height: 300px;
-                }
-            }
+            margin: 20px 0;
 
             .post-con {
                 display: inline-block;
-                width: 279px;
                 height: 251px;
                 padding: 24px 36px;
 
@@ -229,7 +214,7 @@ useAsyncData(fetchData)
                     }
 
                     p::after {
-                        content: ".";
+                        content: "...";
                         font-weight: bold;
                         position: absolute;
                         bottom: 0;
@@ -281,4 +266,3 @@ useAsyncData(fetchData)
     }
 }
 </style>
-

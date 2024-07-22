@@ -46,3 +46,10 @@ export function useTimeStatus(start, end) {
 
   return status;
 }
+
+export function isMobile() {
+  if (/Android|webOS|iPhone|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    return true
+  }
+  return false
+}
